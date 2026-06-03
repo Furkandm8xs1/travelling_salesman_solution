@@ -1,101 +1,101 @@
-# Zaman Pencereli Gezgin Satıcı Problemi (TSP-TW) Çözümü
+# Travelling Salesman Problem with Time Windows (TSP-TW) Solution
 
-## 📋 Proje Özeti
+## 📋 Project Overview
 
-Bu proje, **Zaman Pencereli Gezgin Satıcı Problemi (Travelling Salesman Problem with Time Windows - TSP-TW)** olarak bilinen NP-Hard sınıfındaki zorlu bir optimizasyon probleminin çözümüdür. Proje, 50.000'e kadar şehri içerebilen devasa veri setlerinde etkili bir **Greedy Heuristic** (Açgözlü) algoritması kullanmaktadır.
-
----
-
-## 🎯 Problem Tanımı
-
-### TSP-TW Nedir?
-
-Gezgin Satıcı Probleminin zaman penceresi kısıtlamasıyla genişletilmiş halidir:
-
-- **Amaç:** Satıcı, tüm şehirleri (veya mümkün olduğunca çoğunu) ziyaret ederek başlangıç şehrine dönüş yapmak
-- **Kısıtlamalar:**
-  - Her şehrin **zaman penceresi** vardır: [açılış_saati, kapanış_saati]
-  - Satıcı bir şehre **varış_zamanı ≤ kapanış_saati** olduğu sürece gidebilir
-  - Erken varılırsa açılış_saati'ne kadar beklenir
-  - Dönüş sırasında başlangıç şehrinin zaman penceresi dikkate alınmaz
-- **Optimize Edilecekler:**
-  - Ziyaret edilen şehir sayısı (k) maksimize edilir
-  - Toplam mesafe ve bekleme süresi minimize edilir
+This project is a solution to the **Travelling Salesman Problem with Time Windows (TSP-TW)**, a challenging NP-Hard optimization problem. The project implements an effective **Greedy Heuristic** algorithm for solving TSP-TW with massive datasets containing up to 50,000 cities.
 
 ---
 
-## 🚀 Çözüm Yaklaşımı: Greedy Heuristic
+## 🎯 Problem Definition
 
-### 1. **Çoklu Başlangıç (Multi-Start)**
+### What is TSP-TW?
 
-- Algoritma yalnızca tek bir şehirden değil, birçok başlangıç noktasından rotalar oluşturur
-- Zaman penceresinin en erken açılan şehirlerden başlanır
-- Veri seti büyükse (n > 500) başlangıç adayları sınırlandırılır (ilk 500 şehir)
-- Bu yaklaşım, yerel optimumdan kaçınmaya yardımcı olur
+An extended version of the Travelling Salesman Problem with time window constraints:
 
-### 2. **Skorlama Sistemi (Scoring)**
+- **Objective:** A salesman must visit all cities (or as many as possible) and return to the starting city
+- **Constraints:**
+  - Each city has a **time window**: [open_time, close_time]
+  - The salesman can visit a city only if **arrival_time ≤ close_time**
+  - If arriving early, the salesman must wait until open_time
+  - The time window of the starting city is not considered for the return trip
+- **Optimization Goals:**
+  - Maximize the number of visited cities (k)
+  - Minimize total distance and waiting time
 
-Her adımda, mevcut şehirden gidilebilecek geçerli şehirler arasında seçim yapılırken:
+---
+
+## 🚀 Solution Approach: Greedy Heuristic
+
+### 1. **Multi-Start Approach**
+
+- Algorithm generates routes from multiple starting points, not just one
+- Begins from cities with the earliest opening times in their time windows
+- For large datasets (n > 500), starting candidates are limited (first 500 cities)
+- This approach helps avoid local optima
+
+### 2. **Scoring System**
+
+At each step, when selecting the next city from valid options:
 
 ```
-skor = mesafe + (bekleme_süresi × ceza_katsayısı)
+score = distance + (waiting_time × penalty_coefficient)
 ```
 
-- Düşük skor değeri olan şehir seçilir
-- Bu, hem mesafeyi hem de bekleme süresini dengeleyen bir maliyet fonksiyonudur
-- **Ceza katsayısı:** Uzun bekleme sürelerine karşı daha agresif cezalandırma yapılır
+- City with the lowest score is selected
+- Balances both distance and waiting time in a cost function
+- **Penalty coefficient:** Applies more aggressive penalties for longer waiting times
 
-### 3. **Zaman Penceresi Kontrolü**
+### 3. **Time Window Validation**
 
-- Her bir şehir için varış zamanı kontrol edilir
-- Eğer varış zamanı şehrin kapanış saatinden önceyse şehir geçerli sayılır
-- Erken varılırsa açılış saatine kadar bekleme yapılır
-- Dönüş rotasında başlangıç şehrinin zaman penceresi dikkate alınmaz
+- Arrival time is checked for each city
+- A city is valid if arrival_time ≤ close_time
+- If arriving early, waiting is done until open_time
+- Time window of starting city is ignored for return route
 
-### 4. **Verimlilik Optimizasyonu**
+### 4. **Efficiency Optimization**
 
-- Büyük veri setleri (n > 50.000) için hesaplama süresi sınırlandırılır (maksimum 180 saniye)
-- Her başlangıç noktası için en iyi rota kaydedilir
-- Tüm başlangıç noktaları arasından en iyi sonuç seçilir
+- For large datasets (n > 50,000), computation time is limited (maximum 180 seconds)
+- Best route is recorded for each starting point
+- Final solution is the best among all starting points
 
 ---
 
-## 📁 Proje Dosya Yapısı
+## 📁 Project File Structure
 
 ```
 travelling-salesman/
 │
-├── README.md                   # Bu dosya - proje dokümantasyonu
-├── solver.py                   # Ana çözüm algoritması (Greedy Heuristic)
-├── tsp_tw_verifier.py          # Doğrulama ve sonuç kontrolü aracı
-├── example-input-1.txt         # Örnek input dosyası
-├── example-output-1.txt        # Örnek output dosyası
-└── my-output.txt               # Oluşturulan çıktı (solver.py tarafından)
+├── README.md                   # This file - project documentation
+├── solver.py                   # Main solution algorithm (Greedy Heuristic)
+├── tsp_tw_verifier.py          # Verification and validation tool
+├── example-input-1.txt         # Example input file
+├── example-output-1.txt        # Example output file
+└── my-output.txt               # Generated output (created by solver.py)
 ```
 
-### Dosya Açıklamaları
+### File Descriptions
 
 #### `solver.py`
 
-- **Amaç:** TSP-TW problemini çözen ana algoritma
-- **Giriş:** Input dosyası yolu (şehir verileri)
-- **Çıkış:** Output dosyası yolu (rota ve istatistikler)
-- **Çalışma Mantığı:**
-  1. Input dosyasından şehir verilerini okur
-  2. Çoklu başlangıç noktalarından rotalar oluşturur
-  3. En iyi rotayı bulur
-  4. Sonuçları output dosyasına yazar
+- **Purpose:** Main algorithm solving the TSP-TW problem
+- **Input:** Path to input file (city data)
+- **Output:** Path to output file (route and statistics)
+- **Working Logic:**
+  1. Reads city data from input file
+  2. Generates routes from multiple starting points
+  3. Finds the best route
+  4. Writes results to output file
 
 #### `tsp_tw_verifier.py`
 
-- **Amaç:** Çözüm sonuçlarını doğrula ve geçerliliğini kontrol et
-- **Doğrulama Kuralları:**
-  - Tüm zaman penceresi kısıtlamalarının sağlanması
-  - Mesafe hesaplamalarının doğruluğu
-  - Rota bağlantılarının geçerliliği
-  - Dosya formatının uygunluğu
+- **Purpose:** Validates solution results and checks correctness
+- **Validation Rules:**
+  - All time window constraints are satisfied
+  - Distance calculations are correct
+  - Route connections are valid
+  - File format is correct
 
-#### Input Dosyası Formatı (`example-input-1.txt`)
+#### Input File Format (`example-input-1.txt`)
 
 ```
 city_id x y open_time close_time
@@ -104,12 +104,12 @@ city_id x y open_time close_time
 ...
 ```
 
-- **city_id:** Şehir tanımlayıcısı (0'dan başlar)
-- **x, y:** Kartezyen koordinatlar
-- **open_time:** Şehrin açılış saati
-- **close_time:** Şehrin kapanış saati
+- **city_id:** City identifier (starting from 0)
+- **x, y:** Cartesian coordinates
+- **open_time:** City opening time
+- **close_time:** City closing time
 
-#### Output Dosyası Formatı
+#### Output File Format
 
 ```
 k total_length completion_time
@@ -120,48 +120,48 @@ city_k
 0
 ```
 
-- **k:** Ziyaret edilen şehir sayısı
-- **total_length:** Toplam kat edilen mesafe (tüm parçaların toplamı)
-- **completion_time:** Başlangıça dönüş zamanı (saniye cinsinden)
-- **city_1, city_2, ..., city_k:** Rota (0'ıncı şehir başlangıç noktası)
-- **0:** Başlangıç şehrine dönüş
+- **k:** Number of visited cities
+- **total_length:** Total distance traveled (sum of all segments)
+- **completion_time:** Return time to start (in seconds)
+- **city_1, city_2, ..., city_k:** Route (city 0 is the starting point)
+- **0:** Return to starting city
 
 ---
 
-## 🛠️ Nasıl Kullanılır?
+## 🛠️ How to Use
 
-### Gereksinimler
+### Requirements
 
-- Python 3.7 veya üzeri
-- Standart kütüphane (`math`, `sys`, `time`)
+- Python 3.7 or later
+- Standard library (`math`, `sys`, `time`)
 
-### Çalıştırma Adımları
+### Execution Steps
 
-#### 1. Adım: Çözümü Çalıştır
+#### Step 1: Run the Solver
 
 ```bash
 python solver.py example-input-1.txt my-output.txt
 ```
 
-**Parametreler:**
+**Parameters:**
 
-- `example-input-1.txt`: Input dosyası (şehir verileri)
-- `my-output.txt`: Output dosyası (çıktı rotası)
+- `example-input-1.txt`: Input file (city data)
+- `my-output.txt`: Output file (route solution)
 
-**Çıktı Örneği:**
+**Example Output:**
 
 ```
 k=18, total_length=48531, completion_time=16733 (best found so far)
 Route optimization finished in 3.45 seconds
 ```
 
-#### 2. Adım: Sonuçları Doğrula
+#### Step 2: Verify Results
 
 ```bash
 python tsp_tw_verifier.py example-input-1.txt my-output.txt
 ```
 
-**Çıktı Örneği (Başarılı):**
+**Example Output (Success):**
 
 ```
 ✓ Route verification passed
@@ -170,7 +170,7 @@ python tsp_tw_verifier.py example-input-1.txt my-output.txt
 k=18, total_length=48531, completion_time=16733
 ```
 
-**Çıktı Örneği (Hata Durumunda):**
+**Example Output (Error):**
 
 ```
 ✗ Verification failed: City 5 violated time window
@@ -178,48 +178,48 @@ k=18, total_length=48531, completion_time=16733
 
 ---
 
-## 📊 Algoritma Performansı
+## 📊 Algorithm Performance
 
-### Zaman Karmaşıklığı
+### Time Complexity
 
-- **En kötü durumda:** O(n²) - burada n şehir sayısı
-- **Pratikte:** Başlangıç düğümleri sınırlandırıldığında O(500 × n)
+- **Worst case:** O(n²) - where n is the number of cities
+- **In practice:** O(500 × n) when starting nodes are limited
 
-### Alan Karmaşıklığı
+### Space Complexity
 
-- O(n) - şehir verileri ve rota bilgileri
+- O(n) - city data and route information
 
-### Ölçeklenebilirlik
+### Scalability
 
-| Veri Seti Boyutu   | Tahmini Çalışma Süresi | Yaklaşık Başarı Oranı |
-| ------------------ | ---------------------- | --------------------- |
-| n ≤ 100            | < 1 saniye             | %95-100               |
-| 100 < n ≤ 1.000    | 1-5 saniye             | %80-95                |
-| 1.000 < n ≤ 10.000 | 5-30 saniye            | %60-80                |
-| n > 10.000         | 30-180 saniye          | %40-70                |
+| Dataset Size       | Estimated Runtime | Approximate Success Rate |
+| ------------------ | ----------------- | ------------------------ |
+| n ≤ 100            | < 1 second        | 95-100%                  |
+| 100 < n ≤ 1,000    | 1-5 seconds       | 80-95%                   |
+| 1,000 < n ≤ 10,000 | 5-30 seconds      | 60-80%                   |
+| n > 10,000         | 30-180 seconds    | 40-70%                   |
 
-> **Not:** Başarı oranı = (Ziyaret edilen şehir sayısı / Toplam şehir sayısı)
+> **Note:** Success rate = (Number of visited cities / Total number of cities)
 
 ---
 
-## 🔍 Örnek Senaryo
+## 🔍 Example Scenario
 
-### Input Dosyası (example-input-1.txt)
+### Input File (example-input-1.txt)
 
 ```
-0 200 800 0 9000         # Başlangıç şehri (merkez)
-1 3600 2300 1205 10205   # 12:05-10:05 arasında açık
-2 3100 3300 1680 10680   # 16:80-10:80 arasında açık
+0 200 800 0 9000         # Starting city (center)
+1 3600 2300 1205 10205   # Open 12:05-10:05
+2 3100 3300 1680 10680   # Open 16:80-10:80
 ```
 
-### Kod Çalıştırma
+### Running the Code
 
 ```bash
 python solver.py example-input-1.txt my-output.txt
 python tsp_tw_verifier.py example-input-1.txt my-output.txt
 ```
 
-### Beklenen Çıktı
+### Expected Output
 
 ```
 k=3, total_length=14250, completion_time=10915
@@ -227,72 +227,72 @@ k=3, total_length=14250, completion_time=10915
 
 ---
 
-## 🎓 Algoritma Seçimi Nedenleri
+## 🎓 Why Greedy Heuristic?
 
-### Neden Greedy Heuristic?
+### Reasons for Choosing Greedy Heuristic
 
-1. **NP-Hard Problemin Üstesinden Gelme:** Optimal çözüm bulmak O(n!) zaman alırken, Greedy O(n²)
-2. **Pratik Sonuçlar:** 50.000 şehir için makul bir sürede iyi sonuçlar üretir
-3. **Basit ve Uygulanabilir:** Doğrulama ve hata ayıklama kolaydır
-4. **Deterministic:** Aynı input için her zaman aynı sonucu üretir
+1. **Handling NP-Hard Problem:** Finding optimal solution takes O(n!) time, while Greedy takes O(n²)
+2. **Practical Results:** Produces good results in reasonable time for 50,000 cities
+3. **Simple and Applicable:** Easy to verify and debug
+4. **Deterministic:** Always produces the same result for the same input
 
-### Diğer Olası Yaklaşımlar
+### Other Possible Approaches
 
-- **Optimal (Tam Araştırma):** Küçük veri setler için ideal, büyük setlerde praktik değil
-- **Dinamik Programlama:** Zaman penceresi kısıtlaması nedeniyle karmaşık
-- **Genetik Algoritma:** Daha iyi sonuçlar mümkün ama çalışma süresi uzun
-- **Ant Colony Optimization:** İyi performans ama daha karmaşık
-
----
-
-## 🐛 Olası İyileştirmeler
-
-### Kısa Vadeli
-
-1. **2-Opt Yerelleştirme:** Greedy sonucu iyileştirmek için
-2. **Dinamik Ceza Katsayısı:** Problem özellikleri doğrultusunda otomatik ayarlama
-3. **Parallelizasyon:** Farklı başlangıç noktalarını eş zamanlı işlemler
-
-### Uzun Vadeli
-
-1. **Melez Algoritmalar:** Greedy + Genetik Algoritma kombinasyonu
-2. **Makine Öğrenmesi:** Iyi başlangıç noktalarını tahmin etme
-3. **Kısıt Programlama:** ORTools veya benzer kütüphaneler kullanma
+- **Optimal (Brute Force):** Ideal for small datasets, impractical for large ones
+- **Dynamic Programming:** Complex due to time window constraints
+- **Genetic Algorithm:** Better results possible, but longer execution time
+- **Ant Colony Optimization:** Good performance but more complex
 
 ---
 
-## 📚 Kaynaklar
+## 🐛 Possible Improvements
 
-- **Problem Tanımı:** PDF spesifikasyonunda belirtilen kurallara uygun
-- **Doğrulama:** `tsp_tw_verifier.py` tarafından sağlanan metodoloji
-- **Mesafe Hesabı:** Euclidean mesafesi, PDF'te belirtilen formüle göre
+### Short-term
 
----
+1. **2-Opt Local Search:** Improve Greedy results
+2. **Dynamic Penalty Coefficient:** Automatic adjustment based on problem characteristics
+3. **Parallelization:** Process different starting points concurrently
 
-## ✅ Kontrol Listesi
+### Long-term
 
-Proje tamamlandığında şunları kontrol edin:
-
-- [ ] `solver.py` hatasız çalıştırılır mı?
-- [ ] Output dosyası geçerli formatı sağlıyor mu?
-- [ ] `tsp_tw_verifier.py` doğrulamayı geçiyor mu?
-- [ ] Zaman penceresi kısıtlamaları sağlanıyor mu?
-- [ ] k (ziyaret edilen şehir) makul bir değer mi?
-- [ ] Toplam mesafe ve bekleme süresi hesaplamaları doğru mu?
+1. **Hybrid Algorithms:** Combination of Greedy + Genetic Algorithm
+2. **Machine Learning:** Predict good starting points
+3. **Constraint Programming:** Use ORTools or similar libraries
 
 ---
 
-## 📞 Hata Ayıklama
+## 📚 References
 
-### Sık Karşılaşılan Sorunlar
+- **Problem Definition:** Conforms to rules specified in PDF specification
+- **Validation:** Methodology provided by `tsp_tw_verifier.py`
+- **Distance Calculation:** Euclidean distance according to formula in PDF
 
-#### 1. "FileNotFoundError" hatası
+---
+
+## ✅ Checklist
+
+Before submitting the project, verify:
+
+- [ ] `solver.py` runs without errors?
+- [ ] Output file has valid format?
+- [ ] `tsp_tw_verifier.py` passes validation?
+- [ ] Time window constraints are satisfied?
+- [ ] k (visited cities) is a reasonable value?
+- [ ] Total distance and waiting time calculations are correct?
+
+---
+
+## 📞 Troubleshooting
+
+### Common Issues
+
+#### 1. "FileNotFoundError" Error
 
 ```
 python solver.py input.txt output.txt
 ```
 
-→ Input dosyasının doğru yolda olup olmadığını kontrol edin
+→ Check if the input file exists at the correct path
 
 #### 2. "ValueError: invalid literal for int()"
 
@@ -300,27 +300,27 @@ python solver.py input.txt output.txt
 Input error at line X
 ```
 
-→ Input dosyasının formatını kontrol edin (5 sütun olması gerekir)
+→ Verify input file format (must have 5 columns)
 
-#### 3. Çok az şehir ziyaret edildi
+#### 3. Too Few Cities Visited
 
-- Ceza katsayısını arttırın (daha fazla bekleme toleransı)
-- Başlangıç düğüm sayısını arttırın
-- Zaman penceresi kısıtlamalarının çok katı olup olmadığını kontrol edin
+- Increase the penalty coefficient (more waiting tolerance)
+- Increase the number of starting nodes
+- Check if time window constraints are too strict
 
-#### 4. Program 180 saniyeden uzun sürüyor
+#### 4. Program Takes Longer Than 180 Seconds
 
-- Input dosyası çok büyükse başlangıç düğümleri sayısını azaltın
-- Ceza katsayısını değiştirerek hesaplama hızını etkileyebilirsiniz
-
----
-
-## 📝 Lisans ve Notlar
-
-Bu proje eğitim amaçlıdır. Greedy heuristic yaklaşımı çoğu durumda mantıklı sonuçlar verse de, bazı özel durumlarda daha karmaşık algoritmalar gerekebilir.
+- Reduce the number of starting nodes if input file is very large
+- Adjust the penalty coefficient to affect computation speed
 
 ---
 
-**Son Güncelleme:** 3 Haziran 2026
+## 📝 License and Notes
 
-**Geliştirici:** TSP-TW Çözüm Ekibi
+This project is for educational purposes. While the Greedy heuristic approach produces reasonable results in most cases, more complex algorithms may be needed for special scenarios.
+
+---
+
+**Last Updated:** June 3, 2026
+
+**Developer:** TSP-TW Solution Team
