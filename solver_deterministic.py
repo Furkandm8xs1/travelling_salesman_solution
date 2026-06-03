@@ -110,18 +110,8 @@ def solve_tsp_tw(input_file, output_file):
 
     global_start_time = time.time()
 
-    # 2. Smart multi-start: try all starting points when reasonable, otherwise sample
-    if n <= 500:
-        start_nodes = city_ids[:]
-        random.shuffle(start_nodes)
-    else:
-        # For large datasets, stratified sampling
-        indices = list(range(n))
-        random.shuffle(indices)
-        
-        # Take every k-th city
-        step = max(1, n // 400)
-        start_nodes = [city_ids[i] for i in indices[::step]]
+    # 2. DETERMINISTIC: Try all cities in order (no random shuffle)
+    start_nodes = sorted(city_ids)  # Sort for deterministic order
 
     # 3. Multi-start greedy
     for start_id in start_nodes:

@@ -140,7 +140,7 @@ city_k
 #### Step 1: Run the Solver
 
 ```bash
-python solver.py example-input-1.txt my-output.txt
+python3 solver.py example-input-1.txt my-output.txt
 ```
 
 **Parameters:**
@@ -323,4 +323,35 @@ This project is for educational purposes. While the Greedy heuristic approach pr
 
 **Last Updated:** June 3, 2026
 
-**Developer:** TSP-TW Solution Team
+
+python3 solver.py example-input-1.txt my-output.txt
+
+python3 tsp_tw_verifier.py example-input-1.txt my-output.txt
+
+
+
+
+
+// these methods are related to new batch_solver.py because it is the newest optimal solution which provide all output file.
+
+// and you can write this to your terminal
+python3 batch_solver.py
+
+this batch file create 3 run for each input file and all result are the valid as tsp_tw_verifier said.
+
+// the last thing the project you can compare your file  as writing ----->
+
+python3 tsp_tw_verifier.py  inputfile.txt  your_outputfile.txt
+
+
+
+
+python3 tsp_tw_verifier.py example-input-1.txt example-output-1_run1.txt
+python3 tsp_tw_verifier.py example-input-2.txt example-output-2_run1.txt
+python3 tsp_tw_verifier.py example-input-3.txt example-output-3_run1.txt
+python3 tsp_tw_verifier.py example-input-1.txt example-output-1_run1.txt
+
+
+
+
+
