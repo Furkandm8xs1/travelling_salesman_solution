@@ -11,7 +11,7 @@ def dist(a, b, cities):
 def read_input(input_file):
     cities = {}
 
-    with open(input_file, "r") as f:
+    with open(input_file, "r", encoding='utf-8-sig') as f:
         for line_no, line in enumerate(f, start=1):
             line = line.strip()
             if line == "":

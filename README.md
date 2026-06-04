@@ -349,7 +349,10 @@ python3 tsp_tw_verifier.py  inputfile.txt  your_outputfile.txt
 python3 tsp_tw_verifier.py example-input-1.txt example-output-1_run1.txt
 python3 tsp_tw_verifier.py example-input-2.txt example-output-2_run1.txt
 python3 tsp_tw_verifier.py example-input-3.txt example-output-3_run1.txt
-python3 tsp_tw_verifier.py example-input-1.txt example-output-1_run1.txt
+python3 tsp_tw_verifier.py example-input-4.txt example-output-4_run1.txt
+python3 tsp_tw_verifier.py zor1.txt output-1.txt
+python3 tsp_tw_verifier.py zor2.txt output-2.txt
+
 
 
 
