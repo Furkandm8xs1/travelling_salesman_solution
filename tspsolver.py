@@ -403,13 +403,13 @@ def main():
         script_dir = os.path.dirname(os.path.abspath(__file__))
 
         input_files= [
-        "input1.txt",
-        "input2.txt",
-        "input3.txt",
-        "input4.txt",
-        "input5.txt",
-        "input6.txt",
-        "input7.txt",
+        "inputs/input1.txt",
+        "inputs/input2.txt",
+        "inputs/input3.txt",
+        "inputs/input4.txt",
+        "inputs/input5.txt",
+        "inputs/input6.txt",
+        "inputs/input7.txt",
     ]
 
         for fname in input_files:
